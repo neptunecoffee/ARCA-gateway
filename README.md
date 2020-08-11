@@ -21,3 +21,7 @@
 ```
    $ pip install waitress
 ```
+
+1. Start Mongo
+2. Edit remote_pop.py (threads, database name, etc)
+3. Run ./remote_pop.py 
