@@ -14,7 +14,7 @@ DATA_COLLECTION = "data"
 POA_COLLECTION = "poa"
 COMPRESSION_LEVEL = 3
 HOST="0.0.0.0"
-PORT="80"
+PORT="8080"
 MIME_TYPES = ["text","application", "image", "video", "audio"]
 DICT = {
        "text" : ["plain", "html", "css"],
@@ -295,6 +295,7 @@ def serve_zipblock_by_hash(block_hash):
 def after_request(response):
     header = response.headers
     header['Access-Control-Allow-Origin'] = '*'
+    header['Access-Control-Allow-Headers'] = 'Content-Type'
     return response
 
 if __name__ == "__main__":
