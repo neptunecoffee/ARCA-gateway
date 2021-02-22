@@ -14,7 +14,7 @@ DATA_COLLECTION = "data"
 POA_COLLECTION = "poa"
 COMPRESSION_LEVEL = 3
 HOST="0.0.0.0"
-PORT="8080"
+PORT="80"
 MIME_TYPES = ["text","application", "image", "video", "audio"]
 DICT = {
        "text" : ["plain", "html", "css"],
