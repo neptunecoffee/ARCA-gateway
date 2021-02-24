@@ -47,7 +47,6 @@ def get_transactions(**kwargs):
     This function takes up to  optional parameters: <owners>, a list of owner addresses (DB: owner_address), <recipients> a list of targets(DB: target),
     <ids>, a list of transactions ids, <tags> (DB: tags), a list of filters by name and values,.....,<first>
     and includes into the query only those that are set, returning the transactions that match the criteria.
-    +ids, +blocks, owners instead <from>, recipients instead <to>, sort (sort_order: enum...)
     """
     query_list = []
     query_criteria = {}
@@ -75,31 +74,14 @@ def get_transactions(**kwargs):
                 max = -1
         else:
             max = block["max"]
-        #dec.2020: 'in' deprecated in BlockFilter:
-        #if not "_in" in block:
-        #    in_height_list = []
-        #else:
-        #    in_height_list = block["_in"]
-        '''
-        The following are just nested dicts and lists for a query searching for txs that have their block height either in a list of specified heights: 
-        block[_in] or in a min to max interval. The per se query is:
-        {"$or":[ {"height":{"$in":in_height_list}}, {"$and":[ {"height":{"$lte":max}}, {"height":{"$gte":min}} ]} ]}
-        Must be modified with no "_in"   {"$and":[ {"height":{"$lte":max}}, {"height":{"$gte":min}} ]} 
-        '''
+
         query_height = {}
-        #query_height_in = {}
-        #height_in = {}
         lt_part = {}
         gt_part = {}
         height_lt = {}
         height_gt = {}
         and_list = []
-        #or_list = []
         query_and = {}
-        #query_or = {}
-        #height_in["$in"] = in_height_list
-        #query_height_in["height"] = height_in
-        #or_list.append(query_height_in)
         lt_part["$lte"] = max
         gt_part["$gte"] = min
         height_lt["height"] = lt_part
@@ -107,8 +89,6 @@ def get_transactions(**kwargs):
         and_list.append(height_lt)
         and_list.append(height_gt)
         query_height["$and"] = and_list
-        #or_list.append(query_and)
-        #query_height["$or"] = or_list
         query_list.append(query_height)
     if "owners" in kwargs:
         owners = kwargs["owners"]
@@ -177,7 +157,6 @@ def get_transactions(**kwargs):
         txs = tx_collection.find(query_criteria, {"id" : 1, "last_tx" : 1, "signature" : 1, "owner_address" : 1 , "owner" : 1, "target" : 1,
                   "reward" : 1, "quantity" : 1,  "height" : 1, "tags" : 1, "_id":0}
               ).sort("height",sort_direction).max_time_ms(TIME_LIMT_QUERY_EXEC_MS)
-        #txs = tx_collection.find(query_criteria).limit(1000).max_time_ms(TIME_LIMT_QUERY_EXEC_MS)
         return txs
     except ConnectionFailure as e:
         print("Could not connect to database:", e)
@@ -275,16 +254,3 @@ def get_blocks(**kwargs):
         print("Could not connect to database:", e)
 
 
-if __name__ == "__main__":
-    #tx = get_transaction("-wvMzOoelFkC_YxxpeglpYGcYTt-OaLvLVDhCca2HTM")
-    #print("tx[anchor]=", tx["last_tx"])
-    #block = get_block(height=109876)
-    block = get_block(id="pi-SmSkICWUTMMl5lBBAynhROV1OP9m68NZ6t9ZzLePmLexfuWhQk-UwNgsbYZNp")
-    blocks = get_blocks(ids=["q9ygqjqRJSW1ICEPAiznZuOA2yngOK0YbGCL-V6d7_vscwQVlGuLi9dCdCb3MnB7","pi-SmSkICWUTMMl5lBBAynhROV1OP9m68NZ6t9ZzLePmLexfuWhQk-UwNgsbYZNp"])
-
-    #print("Block info: height= ", block["height"], "id=", block["indep_hash"])
-    #print("timestamp= ", block["timestamp"])
-    #print("prevous b ID= ", block["previous"])
-    for b in blocks:
-        if "height" in b:
-             print("H=",b["height"])
