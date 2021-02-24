@@ -13,6 +13,10 @@
    $ apt-get install python3 
    $ apt-get install python3-requests
  ```
++ Pymongo
+```
+   $ apt-get install python3-pymongo
+ ``` 
 + Flask 1.1
 ```
    $ pip3 install Flask
