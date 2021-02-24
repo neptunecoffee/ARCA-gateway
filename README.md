@@ -15,11 +15,19 @@
  ```
 + Flask 1.1
 ```
-   $ pip install Flask
+   $ pip3 install Flask
 ```
 + Waitress 1.4
 ```
-   $ pip install waitress
+   $ pip3 install waitress
+```
++ Graphene 2.1.8
+```
+   $ pip3 install "graphene>=2.0"
+```
++ Flask-Graphql 2.0.1
+```
+   $ pip3 install flask_graphql
 ```
 
 1. Start Mongo
