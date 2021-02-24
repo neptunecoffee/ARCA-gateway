@@ -22,7 +22,6 @@ class BlockFilter(graphene.InputObjectType):
     '''Find transactions within a block height range.'''
     min = graphene.Int(description='The minimum block height to filter from.')
     max = graphene.Int(description='The maximum block height to filter from.')
-    #_in = graphene.InputField(graphene.List(graphene.Int),name="in") #deprecated
 
 
 class Tag(graphene.ObjectType):
@@ -53,7 +52,6 @@ class Block(graphene.ObjectType):
     previous = graphene.String(required=True, description = "The ID of the previous block")
 
     def resolve_id(parent, info):
-    #Look into dataloader if the repeated calling of get_block is a problem
         if parent.height:
             block = get_block(height=parent.height)
             if "indep_hash" in block:
