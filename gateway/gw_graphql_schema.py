@@ -86,10 +86,8 @@ class Transaction(graphene.ObjectType):
     owner = graphene.Field(Owner, required=True)
     fee = graphene.Field(Amount, required=True)
     quantity = graphene.Field(Amount, required=True)
-    #data = graphene.Field(MetaData, required = True)
     tags = graphene.List(Tag)
     block = graphene.Field(Block)
-    #parent = graphene.Field(Parent)
 
     @classmethod
     def get_node(cls, info, id):
